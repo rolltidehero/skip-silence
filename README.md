@@ -1,6 +1,5 @@
 <p align="center">
     <img src="assets/icon.svg" width="128" height="128" alt="Skip Silence logo">
-
     <a href="https://chrome.google.com/webstore/detail/skip-silence/fhdmkhbefcbhakffdihhceaklaigdllh">
         <img src="img/chrome.png" alt="Available on chrome web store" width="150">
     </a>

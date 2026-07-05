@@ -1,4 +1,9 @@
+rm -rf .output
+
+bun run build
 bun run wxt zip
+
+bun run build:firefox
 bun run wxt zip -b firefox
 
 bun run wxt submit \
