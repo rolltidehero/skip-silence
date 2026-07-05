@@ -1,5 +1,12 @@
 import { browser } from "#imports";
-import { Coffee, FastForward, Volume2, VolumeX, Zap } from "lucide-react";
+import {
+  AppWindow,
+  Coffee,
+  FastForward,
+  Volume2,
+  VolumeX,
+  Zap,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { IntroModal } from "@/components/IntroModal";
 import { SpeedCard } from "@/components/SpeedCard";
@@ -132,7 +139,9 @@ export default function App() {
                 cfg.enabled ? "text-zinc-400" : "font-medium text-lime-600",
               )}
             >
-              {cfg.enabled ? "Watching for silence" : "Flip the switch to start →"}
+              {cfg.enabled
+                ? "Watching for silence"
+                : "Flip the switch to start →"}
             </p>
           </div>
         </div>
@@ -249,7 +258,7 @@ export default function App() {
           )}
         </div>
 
-        <div className="flex items-center justify-center gap-3 pt-0.5 text-[11px] font-medium text-zinc-400">
+        <div className="flex flex-col items-center justify-center gap-3 pt-0.5 text-[11px] font-medium text-zinc-400">
           {saved >= 1000 && (
             <span className="flex items-center gap-1">
               <Zap
@@ -260,6 +269,15 @@ export default function App() {
               Saved {formatDuration(saved)}
             </span>
           )}
+          <a
+            href="https://silence.vantezzen.io/"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1 transition-colors hover:text-lime-600"
+          >
+            <AppWindow className="size-3" />
+            Remove silence from a file? Try the web app
+          </a>
           <a
             href="https://www.buymeacoffee.com/vantezzen"
             target="_blank"
