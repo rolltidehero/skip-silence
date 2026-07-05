@@ -1,77 +1,35 @@
 {
   "name": "skip-silence",
-  "displayName": "Skip silence",
-  "version": "5.2.0",
   "description": "Skip silent parts in videos and audio files.",
-  "author": "vantezzen",
-  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vantezzen/skip-silence.git"
-  },
+  "private": true,
+  "version": "6.0.1",
+  "type": "module",
   "scripts": {
-    "dev": "plasmo dev --target=chrome-mv2",
-    "dev:mv3": "plasmo dev --target=chrome-mv3",
-    "dev:firefox": "plasmo dev --target=firefox-mv2",
-    "build": "plasmo build --target=chrome-mv2 --zip",
-    "build:mv3": "plasmo build --target=chrome-mv3 --zip",
-    "build:firefox": "plasmo build --target=firefox-mv2 --zip"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "wxt": "wxt"
   },
   "dependencies": {
-    "@parcel/core": "^2.6.1",
-    "@types/debug": "^4.1.7",
-    "@types/webextension-polyfill": "^0.9.0",
-    "@vantezzen/plasmo-state": "^2.0.4",
-    "debug": "^4.3.4",
-    "fontsource-poppins": "^4.0.0",
-    "intro.js": "^5.1.0",
-    "intro.js-react": "^0.6.0",
-    "plasmo": "0.90.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-feather": "^2.0.10",
-    "react-transition-group": "^4.4.2",
-    "webextension-polyfill": "^0.9.0"
+    "@tailwindcss/vite": "^4.3.2",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.23.0",
+    "radix-ui": "^1.6.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.6.1",
-    "@trivago/prettier-plugin-sort-imports": "3.2.0",
-    "@types/chrome": "0.0.191",
-    "@types/node": "18.0.1",
-    "@types/react": "18.0.14",
-    "@types/react-dom": "18.0.5",
-    "prettier": "2.7.1",
-    "typescript": "4.7.4"
-  },
-  "manifest": {
-    "host_permissions": [
-      "<all_urls>"
-    ],
-    "commands": {
-      "toggle-enable": {
-        "suggested_key": {
-          "default": "Ctrl+Shift+S"
-        },
-        "description": "Enable/disable Skip Silence for the current tab"
-      },
-      "toggle-command-bar": {
-        "suggested_key": {
-          "default": "Alt+Shift+S"
-        },
-        "description": "Show/hide the command bar"
-      }
-    },
-    "permissions": [
-      "activeTab",
-      "storage",
-      "tabCapture"
-    ],
-    "default_locale": "en",
-    "browser_specific_settings": {
-      "gecko": {
-        "id": "skip-silence@vantezzen.io"
-      }
-    }
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@wxt-dev/module-react": "^1.1.5",
+    "typescript": "^5.9.3",
+    "wxt": "^0.20.27"
   }
 }

@@ -1,0 +1,66 @@
+<!doctype html>
+<!--
+  Manual test page for Skip Silence.
+  Serve same-origin (e.g. `python3 -m http.server` in this folder, or open via
+  the WXT dev browser) — do NOT open as file:// with a served extension.
+
+  Expected with the extension enabled:
+  - During the 440Hz tone: "rate" stays at the configured playback speed.
+  - During silence: after ~250ms the rate ramps up to the silence speed
+    (and audio mutes if "Mute during silence" is on).
+  - The popup meter shows lime bars for tone, gray for silence.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Skip Silence test</title>
+    <style>
+      body { font-family: system-ui; max-width: 480px; margin: 3rem auto; }
+      #rate { font-size: 3rem; font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <h1>Skip Silence test</h1>
+    <p>Alternating 2s of 440Hz tone and 3s of silence, 60s total.</p>
+    <button id="start">Generate &amp; play</button>
+    <audio id="player" controls></audio>
+    <div id="rate">rate: –</div>
+
+    <script>
+      function makeWav() {
+        const sampleRate = 8000;
+        const seconds = 60;
+        const samples = new Int16Array(sampleRate * seconds);
+        for (let i = 0; i < samples.length; i++) {
+          const t = i / sampleRate;
+          const inTone = t % 5 < 2; // 2s tone, 3s silence
+          samples[i] = inTone ? Math.sin(2 * Math.PI * 440 * t) * 0.5 * 32767 : 0;
+        }
+        const header = new DataView(new ArrayBuffer(44));
+        const writeStr = (offset, s) => [...s].forEach((c, i) => header.setUint8(offset + i, c.charCodeAt(0)));
+        writeStr(0, 'RIFF');
+        header.setUint32(4, 36 + samples.byteLength, true);
+        writeStr(8, 'WAVEfmt ');
+        header.setUint32(16, 16, true);
+        header.setUint16(20, 1, true); // PCM
+        header.setUint16(22, 1, true); // mono
+        header.setUint32(24, sampleRate, true);
+        header.setUint32(28, sampleRate * 2, true);
+        header.setUint16(32, 2, true);
+        header.setUint16(34, 16, true);
+        writeStr(36, 'data');
+        header.setUint32(40, samples.byteLength, true);
+        return new Blob([header.buffer, samples.buffer], { type: 'audio/wav' });
+      }
+
+      const player = document.getElementById('player');
+      document.getElementById('start').onclick = () => {
+        player.src = URL.createObjectURL(makeWav());
+        player.play();
+      };
+      setInterval(() => {
+        document.getElementById('rate').textContent = `rate: ${player.playbackRate.toFixed(2)}×`;
+      }, 100);
+    </script>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 <p align="center">
-    <img src="img/title.png"><br />
+    <img src="assets/icon.svg" width="128" height="128" alt="Skip Silence logo">
+
     <a href="https://chrome.google.com/webstore/detail/skip-silence/fhdmkhbefcbhakffdihhceaklaigdllh">
         <img src="img/chrome.png" alt="Available on chrome web store" width="150">
     </a>
@@ -10,121 +11,77 @@
         <img src="img/edge.png" alt="Available on Edge Add-ons" width="150">
     </a>
     <a href="https://www.buymeacoffee.com/vantezzen" target="_blank">
-      <img src="assets/bmc.png" alt="Buy Me A Coffee" width="150">
+    <img src="assets/bmc.png" alt="Buy Me A Coffee" width="150">
     </a>
 </p>
 
-# Skip Silence
+# ⚡ Skip Silence
 
-"Skip Silence" is a browser extension that allows you to automatically skip parts of a video that are silent.
-It is highly inspired by CaryKH's [automatic on-the-fly video editing tool](https://www.youtube.com/watch?v=DQ8orIurGxw).
-The extension works with most websites that use HTML5 `audio` and `video` elements (like YouTube).
+> Welcome Skip Silence 6!
+> Sorry for making you wait that long, but finally here is 
 
-## Demo
+**Watch lectures, podcasts and videos faster — by skipping the parts where
+nothing is said.**
 
-<img src="img/demo.gif" height="300">
+Skip Silence watches the audio of whatever you're playing and speeds up
+playback whenever it detects silence. The moment someone speaks again, it
+snaps back to normal speed.
 
-(Video used: Unedited part of <https://youtu.be/DQ8orIurGxw?t=234>)
+A 60-minute lecture with typical pauses plays in ~45 minutes. The extension
+counts what it saves you.
 
-## Installation
+## Features
 
-"Skip Silence" is available through the [chrome web store](https://chrome.google.com/webstore/detail/skip-silence/fhdmkhbefcbhakffdihhceaklaigdllh).
-You can also install this extension on Chrome by downloading the source from GitHub and loading the unpacked, built extension through "chrome://extensions" as a "Temporary Add-On".
-
-## Firefox
-
-"Skip Silence" only has **restricted** support for Firefox.
-
-On Chrome, "Skip Silence" uses a browser API to support analyzing audio on almost all websites. Unfortunately, Firefox currently doesn't support this API and thus the extension doesn't work on some websites. Take a look at [open bugs](#open-browser-bugs) for more info.
-
-If you have problems with the extension on a website on Firefox, you can try using a Chromium-based browser like Ungoogled Chromium.
-
-## Usage
-
-When "Skip Silence" detects a compatible element on the current page, its icon in the menubar will be colored.
-
-![Changing icon](img/icon_change.png)
-
-You can now click on this icon to reveal the settings popup.
-
-You can now:
-
-- Click the toggle button to enable and disable "Skip Silence" for the current page
-- Change "Skip Silence"'s settings
-- View the current volume using the VU meter
-  - The VU Meter will be blue when on normal speed and green when currently in a silent part
-  - The red line represents your current volume threshold
-
-## Limitations
-
-- Won't work on sites that use other methods to play video or audio (e.g. Spotify Web Player uses a special method to prevent songs from being downloaded)
-
-## How does it work?
-
-The extension attaches a JavaScript audio analyser to the current video or audio source and will speed up or slow down the video using the current volume of the audio.
-
-## Open browser bugs
-
-The extension sometimes seems to push the boundaries of what browsers can do. Due to this, some features that would be nice to have can't be implemented as the browsers contain bugs or missing features.
-
-Current list of bugs/feature requests the extension is waiting for
-
-- Chrome mutes tab when `preferCurrentTab: true` is set
-  - https://bugs.chromium.org/p/chromium/issues/detail?id=1317964&q=preferCurrentTab&can=2
-  - This would make selecting the tab for the "Screen capture" analyzer type easier
-- Firefox doesn't support audio for screen capture
-  - https://bugzilla.mozilla.org/show_bug.cgi?id=1541425
-  - Due to this, the "Screen capture" analyzer type is not available on Firefox
-- Firefox doesn't support the `tabCapture` API
-  - https://bugzilla.mozilla.org/show_bug.cgi?id=1391223
-  - Due to this, the "Tab-output analysis" analyzer type is not available on Firefox#
-- Chrome MV3 doesn't support the `tabCapture` API
-  - https://github.com/GoogleChrome/chrome-extensions-samples/issues/627
-  - Due to this, Skip silence is currently still using MV2 on Chrome
-- Chrome video and audio desynchronize over time when repeatedly switching speed
-  - https://bugs.chromium.org/p/chromium/issues/detail?id=1231093
-  - "Keep audio in sync" was added as a temporary fix for this bug
+- **Works everywhere HTML5 media plays** — YouTube, Twitch VODs,
+  podcast players, university lecture portals, plain `<video>`/`<audio>` pages.
+- **Two speeds, your choice** — set a speed for speech (e.g. 1×) and one for
+  silence (e.g. 3×). Skip Silence switches between them automatically.
+- **Silence stays silent** — optionally mute the leftover hiss and keyboard
+  noise while fast-forwarding through quiet parts.
+- **Smooth transitions** — a small audio lookahead lets Skip Silence unmute at
+  exactly the moment speech returns, so soft first syllables and breaths
+  aren't clipped.
+- **Zero tuning needed** — the silence threshold adapts to each video's noise
+  floor automatically. Prefer control? Switch to a manual threshold with a
+  live volume meter.
+- **Per-site settings** — different speeds for your lecture portal than for
+  YouTube, or turn it off entirely on music sites.
+- **Keyboard shortcut** — `Ctrl+Shift+S` toggles it anywhere.
+- **Private by design** — everything runs locally in your browser. No
+  accounts, no analytics, no data leaves your machine.
 
 ## Development
 
-This extension is using the [plasmo framework](https://docs.plasmo.com/) for developing and building.
+1. Build and load the extension:
 
-To start development, follow these steps:
+   ```sh
+   bun i
+   bun run build        # Chrome → .output/chrome-mv3
+   bun run build:firefox
+   ```
 
-1. Check if your [Node.js](https://nodejs.org/) version is v18 or newer.
-2. Clone this repository.
-3. Run `pnpm install` to install the dependencies.
-4. Run `pnpm dev` to start the development server for chrome or `pnpm dev:firefox` for Firefox.
-5. Load your extension on Chrome following:
-   1. Access `chrome://extensions/`
-   2. Check `Developer mode`
-   3. Click on `Load unpacked extension`
-   4. Select the `build` folder.
-6. Happy hacking.
+   Load `.output/chrome-mv3` via `chrome://extensions` → "Load unpacked"
+   (or the Firefox equivalent via `about:debugging`).
 
-## Build
+2. Play any video or podcast. The popup shows a live volume meter with the
+   detection threshold — lime bars are speech, gray bars are silence being
+   skipped.
 
-Requirements:
+3. Adjust the **Speech** and **Silence** speeds to taste. That's it.
 
-- NodeJS 18
-- preferably pnpm but npm will also work
+## Good to know
 
-Run these commands in the root of the extension files:
+- **DRM content** (Netflix, Spotify) can't be analyzed — browsers don't let
+  extensions touch protected audio. The popup will tell you.
+- **Live streams** are left alone: skipping ahead of a live edge only causes
+  buffering.
+- Some **cross-origin media** can't be analyzed safely; Skip Silence leaves it
+  untouched rather than risk breaking its audio, and says so in the popup.
 
-```bash
-pnpm install # or npm install
-pnpm run build # or npm run build
-pnpm run build:firefox # or npm run build
-```
+## Development
 
-After the build is done, the raw contents will be placed in `/build` and the compacted zip will be placed in `/build/[chrome/firefox]-mv2-prod.zip`.
+Built with [WXT](https://wxt.dev), React 19, Tailwind v4 and the Web Audio
+API. `bun run dev` starts a browser with the extension loaded and hot reload.
 
-## Contributing
-
-Please fork this repository and create a new pull request to contribute to it.
-
-If you notice any errors, please create a new issue on GitHub.
-
-## License
-
-Licensed under the [MIT License](LICENSE)
+Curious how real-time silence detection, the lookahead trick and the
+per-site model work? Read [TECH.md](TECH.md).
